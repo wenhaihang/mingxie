@@ -19,13 +19,13 @@
 			  <ul>
 			    <li>
 			      <i style="background-position: 0px -382px;"></i>
-			      <input type="text" placeholder="请输入手机或E-mail">
-			      <b></b>
+			      <input type="text" placeholder="请输入手机或E-mail" v-model="phoneNum" @blur="phone">
+			      <b :class="{bb:cha=='cuo'}"></b>
 			    </li>
 			    <li>
 			      <i></i>
 			      <input type="text" placeholder="请输入您的密码">
-			      <b></b>
+			      <b ></b>
 			    </li>
 			    <li>
 			      <i></i>
@@ -39,7 +39,7 @@
 			         background="rgba(0,0,0,0)"
 			         progress-bar-bg="#7AC23C"
 			         text-size="14px"
-			         :circle="false">
+			         :circle="false">x
 			      </drag-verify>
 			    </li>
 			  </ul>
@@ -115,15 +115,32 @@
   import dragVerify from 'vue-drag-verify'
   export default {
     name: 'login',
-	data(){
-		return {
-			msg:'one'
-		}
-	},
+		data(){
+			return {
+				msg:'one',
+				cha:'cuo'
+			}
+		},
     components:{
         dragVerify
-      }
+     },
+		 methods:{
+			 phone(){
+				 console.log(this.phoneNum)
+				 if((this.phoneNum).length==11){
+				   let phoneReg = /^[1][3,4,c5,7,8][0-9]{9}$/;
+				   if (!phoneReg.test(this.phoneNum)) {
+					 this.cha = !this.cha
+				   } else {
+					   this.cha ='cuo'
+				   }
+				 }else{
+					 this.cha = !this.cha
+				 }
+			 }
+		 }
   }
+  
 </script>
 
 <style>
@@ -248,7 +265,6 @@
     background-position: 4px -72px;
   }
   .span2-3 li:nth-child(1) b{
-    display:none;
     width: 20px;
     height: 20px;
     line-height: 46px;
@@ -258,6 +274,9 @@
     position: absolute;
     right: 10px;
     top: 0;
+  }
+  .bb{
+	  display: none;
   }
   .span2-3 li:nth-child(2) input{
     width: 76%;
